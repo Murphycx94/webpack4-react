@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require('path');
 
+
 const resolve = _path => path.join(__dirname, '..', _path);
 
 module.exports = function (env) {
@@ -56,12 +57,7 @@ module.exports = function (env) {
           test: /\.(css)?$/,
           use: [
             isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                minimize: true
-              }
-            },
+            'css-loader',
             'postcss-loader'
           ]
         },
@@ -70,6 +66,7 @@ module.exports = function (env) {
           use: [
             isProd ? MiniCssExtractPlugin.loader : 'style-loader',
             'css-loader',
+            'postcss-loader',
             'less-loader'
           ],
         },
@@ -78,6 +75,10 @@ module.exports = function (env) {
     plugins: [
       new webpack.ProgressPlugin(),
       new CleanWebpackPlugin(),
+      isProd && new MiniCssExtractPlugin({
+        filename: 'static/css/[name].[hash:8].css',
+        chunkFilename: 'static/css/[name].[hash:8].chunk.css',
+      }),
       new CopyWebpackPlugin([
         {
           from: resolve('public'),
@@ -88,6 +89,6 @@ module.exports = function (env) {
           ]
         }
       ])
-    ]
+    ].filter(Boolean)
   }
 } 

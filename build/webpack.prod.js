@@ -4,12 +4,14 @@ process.env.NODE_ENV = 'production';
 const {
   DefinePlugin
 } = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const merge = require('webpack-merge');
 const configFactory = require('./webpack.base');
 const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const safePostCssParser = require('postcss-safe-parser');
 
 const resolve = _path => path.join(__dirname, '..', _path);
 
@@ -27,6 +29,14 @@ module.exports = merge(base, {
     publicPath: config.publicPath
   },
   optimization: {
+    minimizer: [
+      new TerserPlugin(),
+      new OptimizeCSSAssetsPlugin({
+        cssProcessorOptions: {
+          parser: safePostCssParser
+        }
+      }),
+    ],
     splitChunks: {
       chunks: 'all',
       name: true,
@@ -45,10 +55,6 @@ module.exports = merge(base, {
         NODE_ENV: '"production"',
         BASE_URL: '"/"'
       }
-    }),
-    new MiniCssExtractPlugin({
-      filename: 'css/[name].[hash:8].css',
-      chunkFilename: 'css/[name].[hash:8].chunk.css',
     }),
     new BundleAnalyzerPlugin()
   ]
