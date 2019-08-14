@@ -1,9 +1,9 @@
 const {
   DefinePlugin
 } = require('webpack');
-const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const merge = require('webpack-merge');
 const base = require('./webpack.base');
 const path = require('path');
@@ -45,6 +45,15 @@ module.exports = merge(base, {
       }
     }),
     new BundleAnalyzerPlugin(),
-    new CompressionPlugin()
+    new UglifyJsPlugin({
+      uglifyOptions: {
+        compress: {
+          warnings: false
+        }
+      },
+      exclude: /\/node_modules/,
+      sourceMap: true,
+      parallel: true
+    }),
   ]
 });
