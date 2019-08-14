@@ -1,3 +1,6 @@
+process.env.BABEL_ENV = 'development';
+process.env.NODE_ENV = 'development';
+
 const {
   DefinePlugin,
   NoEmitOnErrorsPlugin,
@@ -6,20 +9,18 @@ const {
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const merge = require('webpack-merge');
-const base = require('./webpack.base');
+const configFactory = require('./webpack.base');
 const path = require('path');
 
 const resolve = _path => path.join(__dirname, '..', _path);
 
-process.env.BABEL_ENV = 'development';
-process.env.NODE_ENV = 'development';
+const base = configFactory(process.env.NODE_ENV);
 
 const config = {
   publicPath: '/'
 }
 
 module.exports = merge(base, {
-  mode: 'development',
   devtool: 'cheap-module-source-map',
   entry: [
     'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
@@ -29,7 +30,6 @@ module.exports = merge(base, {
     publicPath: config.publicPath
   },
   optimization: {
-    minimize: false,
     splitChunks: {
       chunks: 'all',
       name: true,

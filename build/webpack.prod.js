@@ -1,21 +1,24 @@
+process.env.BABEL_ENV = 'production';
+process.env.NODE_ENV = 'production';
+
 const {
   DefinePlugin
 } = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const merge = require('webpack-merge');
-const base = require('./webpack.base');
+const configFactory = require('./webpack.base');
 const path = require('path');
 
 const resolve = _path => path.join(__dirname, '..', _path);
 
-process.env.BABEL_ENV = 'production';
-process.env.NODE_ENV = 'production';
+const base = configFactory(process.env.NODE_ENV);
 
 const config = {
   publicPath: '/'
 }
+
 
 module.exports = merge(base, {
   mode: 'production',
@@ -24,7 +27,6 @@ module.exports = merge(base, {
     publicPath: config.publicPath
   },
   optimization: {
-    minimize: true,
     splitChunks: {
       chunks: 'all',
       name: true,
@@ -44,16 +46,10 @@ module.exports = merge(base, {
         BASE_URL: '"/"'
       }
     }),
-    new BundleAnalyzerPlugin(),
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        compress: {
-          warnings: false
-        }
-      },
-      exclude: /\/node_modules/,
-      sourceMap: true,
-      parallel: true
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[hash:8].css',
+      chunkFilename: 'css/[name].[hash:8].chunk.css',
     }),
+    new BundleAnalyzerPlugin()
   ]
 });
