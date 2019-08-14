@@ -5,14 +5,11 @@ const path = require('path');
 
 const resolve = _path => path.join(__dirname, '..', _path);
 
-process.env.BABEL_ENV = 'development';
-process.env.NODE_ENV = 'development';
-
 module.exports = {
   entry: resolve('src/main.jsx'),
   output: {
     path: resolve('dist/'),
-    filename: 'js/main.[hash:8].js',
+    filename: 'js/[name].[hash:8].js',
     chunkFilename: 'js/[name].[hash:8].js'
   },
   resolve: {
@@ -30,7 +27,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: 'static/img/[name].[hash:8].[ext]'
+          name: 'img/[name].[hash:8].[ext]'
         }
       },
       // 音视频loader
@@ -39,7 +36,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: 'static/media/[name].[hash:8].[ext]',
+          name: 'media/[name].[hash:8].[ext]',
         }
       },
       // js、jsx loader
@@ -67,13 +64,6 @@ module.exports = {
       },
     ]
   },
-  // optimization: {
-  //   minimize: false,
-  //   splitChunks: {
-  //     chunks: 'all',
-  //     name: false
-  //   }
-  // },
   plugins: [
     new webpack.ProgressPlugin(),
     new CleanWebpackPlugin(),

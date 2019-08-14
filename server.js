@@ -12,8 +12,7 @@ const resolve = file => path.resolve(__dirname, file)
 
 app.use(webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath,
-  logLevel: 'warn',
-  quiet: true
+  logLevel: 'warn'
 }));
 
 app.use(webpackHotMiddleware(compiler, {
@@ -62,6 +61,6 @@ Note that the development build is not optimized
 To create a production build, use npm run build.
 
       `)
-    }, 1200)
+    }, 2000)
   })
 })

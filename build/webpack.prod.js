@@ -1,35 +1,30 @@
 const {
-  DefinePlugin,
-  NoEmitOnErrorsPlugin,
-  HotModuleReplacementPlugin
+  DefinePlugin
 } = require('webpack');
+const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const merge = require('webpack-merge');
 const base = require('./webpack.base');
 const path = require('path');
 
 const resolve = _path => path.join(__dirname, '..', _path);
 
-process.env.BABEL_ENV = 'development';
-process.env.NODE_ENV = 'development';
+process.env.BABEL_ENV = 'production';
+process.env.NODE_ENV = 'production';
 
 const config = {
   publicPath: '/'
 }
 
 module.exports = merge(base, {
-  mode: 'development',
-  devtool: 'cheap-module-source-map',
-  entry: [
-    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
-    base.entry
-  ],
+  mode: 'production',
+  devtool: 'source-map',
   output: {
     publicPath: config.publicPath
   },
   optimization: {
-    minimize: false,
+    minimize: true,
     splitChunks: {
       chunks: 'all',
       name: true,
@@ -45,12 +40,11 @@ module.exports = merge(base, {
     }),
     new DefinePlugin({
       'process.env': {
-        NODE_ENV: '"development"',
+        NODE_ENV: '"production"',
         BASE_URL: '"/"'
       }
     }),
-    new HotModuleReplacementPlugin(),
-    new NoEmitOnErrorsPlugin(),
-    new FriendlyErrorsPlugin()
+    new BundleAnalyzerPlugin(),
+    new CompressionPlugin()
   ]
 });
