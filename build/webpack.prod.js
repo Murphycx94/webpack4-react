@@ -12,6 +12,7 @@ const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const safePostCssParser = require('postcss-safe-parser');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const resolve = _path => path.join(__dirname, '..', _path);
 
@@ -44,6 +45,7 @@ module.exports = merge(base, {
     runtimeChunk: true
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: resolve('public/index.html'),
       templateParameters: {

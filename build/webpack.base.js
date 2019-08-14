@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require('path');
 
 
@@ -74,7 +73,6 @@ module.exports = function (env) {
     },
     plugins: [
       new webpack.ProgressPlugin(),
-      new CleanWebpackPlugin(),
       isProd && new MiniCssExtractPlugin({
         filename: 'static/css/[name].[hash:8].css',
         chunkFilename: 'static/css/[name].[hash:8].chunk.css',
