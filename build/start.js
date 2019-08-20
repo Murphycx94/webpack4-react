@@ -3,28 +3,29 @@ const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require("webpack-hot-middleware");
+const webpackHotMiddleware = require('webpack-hot-middleware');
 
+const resolve = file => path.resolve(__dirname, file);
 const app = express();
 const config = require('./webpack.dev');
 const compiler = webpack(config);
-const resolve = file => path.resolve(__dirname, file)
 
-app.use(webpackDevMiddleware(compiler, {
+const devMiddleware = webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath,
   logLevel: 'warn'
-}));
-
-app.use(webpackHotMiddleware(compiler, {
+})
+const hotMiddleware = webpackHotMiddleware(compiler, {
   log: console.log,
   path: '/__webpack_hmr',
-  heartbeat: 10 * 1000
-}));
+  heartbeat: 5000
+})
 
-const serve = (path) => express.static(resolve(path));
+app.use(devMiddleware);
+app.use(hotMiddleware);
 
-app.use(serve('./dist'));
-app.use(serve('./public'));
+
+app.use(express.static(resolve('../dist')));
+app.use(express.static(resolve('../public')));
 
 function getPort() {
   return new Promise((resolve, reject) => {
@@ -50,8 +51,7 @@ function getPort() {
 
 getPort().then((port) => {
   app.listen(port, () => {
-    setTimeout(() => {
-      console.log(`
+    console.log(`
 
 You can now view app in the browser.
       
@@ -61,6 +61,5 @@ Note that the development build is not optimized
 To create a production build, use npm run build.
 
       `)
-    }, 2000)
   })
 })

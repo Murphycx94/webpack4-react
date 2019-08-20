@@ -22,7 +22,6 @@ const config = {
   publicPath: '/'
 }
 
-
 module.exports = merge(base, {
   mode: 'production',
   devtool: 'source-map',

@@ -23,7 +23,7 @@ const config = {
 module.exports = merge(base, {
   devtool: 'cheap-module-source-map',
   entry: [
-    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
     base.entry
   ],
   output: {
