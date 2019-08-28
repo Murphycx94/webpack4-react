@@ -69,6 +69,16 @@
     "webpack-merge": "^4.2.1"
   },
   "gitHooks": {
-    "pre-commit": "npm run lint"
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint",
+      "git add"
+    ],
+    "*.vue": [
+      "npm run lint",
+      "git add"
+    ]
   }
 }
