@@ -13,6 +13,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const safePostCssParser = require('postcss-safe-parser');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const uploadImgWebpackPlugin = require('./upload-img-webpack-plugin');
 
 const resolve = _path => path.join(__dirname, '..', _path);
 
@@ -57,6 +58,7 @@ module.exports = merge(base, {
         BASE_URL: '"/"'
       }
     }),
-    new BundleAnalyzerPlugin()
+    // new BundleAnalyzerPlugin(),
+    new uploadImgWebpackPlugin()
   ]
 });

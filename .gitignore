@@ -4,6 +4,8 @@ jscoverage_lib/
 bower_components/
 /dist
 .idea
+upload-img-webpack-plugin/
+upload-img/
 
 # temp file for git conflict merging
 *.orig

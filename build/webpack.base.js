@@ -22,18 +22,28 @@ module.exports = function (env) {
     resolve: {
       extensions: ['.js', '.jsx', 'json'],
       alias: {
-        'public': resolve('public'),
+        public: resolve('public'),
         '@': resolve('src')
       }
     },
     module: {
       rules: [
+        // eslint-loader
+        isDev && {
+          enforce: 'pre',
+          test: /\.(js|jsx)$/,
+          loader: 'eslint-loader',
+          include: [resolve('src')],
+          options: {
+            formatter: require('eslint-friendly-formatter')
+          }
+        },
         // 图片loader
         {
           test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
           loader: 'url-loader',
           options: {
-            limit: 10000,
+            limit: 8192,
             name: 'img/[name].[hash:8].[ext]'
           }
         },
@@ -42,15 +52,15 @@ module.exports = function (env) {
           test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)?$/,
           loader: 'url-loader',
           options: {
-            limit: 10000,
-            name: 'media/[name].[hash:8].[ext]',
+            limit: 8192,
+            name: 'media/[name].[hash:8].[ext]'
           }
         },
         // js、jsx loader
         {
           test: /\.(js|jsx)?$/,
           exclude: /node_modules/,
-          use: ['babel-loader'],
+          use: ['babel-loader']
         },
         {
           test: /\.(css)?$/,
@@ -67,24 +77,23 @@ module.exports = function (env) {
             'css-loader',
             'postcss-loader',
             'less-loader'
-          ],
-        },
-      ]
+          ]
+        }
+      ].filter(Boolean)
     },
     plugins: [
       new webpack.ProgressPlugin(),
-      isProd && new MiniCssExtractPlugin({
-        filename: 'css/[name].[contenthash:8].css',
-        chunkFilename: 'css/[name].[contenthash:8].chunk.css',
-      }),
+      isProd &&
+        new MiniCssExtractPlugin({
+          filename: 'css/[name].[contenthash:8].css',
+          chunkFilename: 'css/[name].[contenthash:8].chunk.css'
+        }),
       new CopyWebpackPlugin([
         {
           from: resolve('public'),
           to: resolve('dist'),
           toType: 'dir',
-          ignore: [
-            '.DS_Store'
-          ]
+          ignore: ['.DS_Store']
         }
       ])
     ].filter(Boolean)

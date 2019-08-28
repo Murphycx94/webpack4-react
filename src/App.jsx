@@ -1,12 +1,15 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
+import icon from '@/assets/images/bg.jpg'
 
 const App = () => {
   return (
     <Router>
-      测试
+      <div>
+        <img src={icon} alt="logo" /> {/* 这样可以 */}
+      </div>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App
