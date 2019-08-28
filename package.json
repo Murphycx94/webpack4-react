@@ -68,9 +68,9 @@
     "webpack-log": "^3.0.1",
     "webpack-merge": "^4.2.1"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
+  "pre-commit": [
+    "lint"
+  ],
   "lint-staged": {
     "*.js": [
       "npm run lint",
