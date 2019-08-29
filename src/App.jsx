@@ -7,7 +7,6 @@ const App = () => {
     <Router>
       <div>
         <img src={icon} alt="logo" /> {/* 这样可以 */}
-       
       </div>
     </Router>
   )
