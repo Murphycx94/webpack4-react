@@ -79,7 +79,7 @@
       "npm run lint",
       "git add"
     ],
-    "*.vue": [
+    "*.jsx": [
       "npm run lint",
       "git add"
     ]
